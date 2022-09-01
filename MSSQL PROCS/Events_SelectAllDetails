@@ -1,0 +1,93 @@
+USE [AdvDiversity]
+GO
+/****** Object:  StoredProcedure [dbo].[Events_SelectAllDetails]    Script Date: 9/1/2022 1:35:06 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+	-- =============================================
+    -- Author: Claudia Diaz
+    -- Create date: 5/22/2022
+    -- Description: [Events_SelectAllDetails] for dbo.Events
+    -- Code Reviewer: Aeron Inouye
+    -- MODIFIED BY: author
+    -- MODIFIED DATE: M/DD/YEAR
+    -- Code Reviewer:
+    -- Note:
+    -- =============================================
+
+
+
+ALTER proc [dbo].[Events_SelectAllDetails] @PageIndex int
+									,@PageSize int
+
+as
+/*
+	
+	Declare @PageIndex int = 0
+			 ,@PageSize int = 5
+
+	Execute dbo.Events_SelectAllDetails @PageIndex 
+									,@PageSize
+
+*/
+
+Begin
+
+
+	Declare @offset int = @PageIndex * @PageSize
+
+	Select e.Id
+		,e.EventTypeId
+		,et.Name as EventType
+		,e.Name
+		,e.Summary
+		,e.ShortDescription
+		,e.VenueId
+		,v.Name as VenueName
+		,v.Description as VenueDescription
+		,v.Url as VenueUrl
+		,l.Id
+		,l.LocationTypeId
+		,lt.Name as VenueType
+		,l.LineOne
+		,l.LineTwo
+		,l.City
+		,l.StateId
+		,s.Name as State
+		,l.Zip as ZipCode
+		,l.Latitude
+		,l.Longitude
+		,l.DateCreated
+		,l.DateModified
+		,l.CreatedBy
+		,l.ModifiedBy
+		,e.Id as EventStatusId
+		,es.Name as EventStatus
+		,e.ImageUrl
+		,e.ExternalSiteUrl
+		,e.isFree
+		,e.DateStart
+		,e.DateEnd
+		,e.CreatedBy
+		,TotalCount = COUNT(1) OVER()
+		
+		From dbo.Events as e inner join dbo.EventTypes as et
+		on e.EventTypeId = et.Id
+		inner join dbo.EventStatus as es
+		on e.EventStatusId = es.Id
+		inner join dbo.Venues as v
+		on v.Id = e.VenueId
+		inner join dbo.Locations as l
+		on v.LocationId = l.Id
+		inner join dbo.LocationTypes as lt
+		on lt.Id = l.LocationTypeId
+		inner join dbo.States as s
+		on s.Id = l.StateId
+
+		Order by e.Id
+		OFFSET @offSet Rows
+		Fetch Next @PageSize Rows ONLY
+
+
+End
