@@ -1,0 +1,47 @@
+USE [AdvDiversity]
+GO
+/****** Object:  StoredProcedure [dbo].[Events_Delete_ById]    Script Date: 9/1/2022 1:09:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+   -- =============================================
+    -- Author: Claudia Diaz
+    -- Create date: 5/22/2022
+    -- Description: DeleteById for dbo.Events (Changes event status to cancelled)
+    -- Code Reviewer: Aeron Inouye
+    -- MODIFIED BY: Author
+    -- MODIFIED DATE: M/DD/YEAR
+    -- Code Reviewer:
+    -- Note:
+    -- =============================================
+
+
+ALTER proc [dbo].[Events_Delete_ById]
+				@Id int 
+				
+as
+
+/*
+	DECLARE @Id int = 18
+
+	Execute dbo.Events_Delete_ById @Id
+
+	Execute dbo.Events_SelectDetails_ById @Id
+
+
+
+*/
+
+Begin 
+		DECLARE @DateModified datetime2(7) = GETUTCDATE()
+
+		UPDATE [dbo].[Events]
+		   SET [EventStatusId] = 4
+				,[DateModified] = @DateModified
+   
+		 WHERE Id = @Id
+
+
+
+End 
