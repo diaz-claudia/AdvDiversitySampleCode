@@ -1,0 +1,40 @@
+USE [AdvDiversity]
+GO
+/****** Object:  StoredProcedure [dbo].[EventStatus_SelectAll]    Script Date: 9/1/2022 1:37:04 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER proc [dbo].[EventStatus_SelectAll]
+
+   -- =============================================
+    -- Author: Claudia Diaz
+    -- Create date: 5/22/2022
+    -- Description: SelectAll for dbo.EventStatus Lookup Table
+    -- Code Reviewer: Author
+    -- MODIFIED BY: Author
+    -- MODIFIED DATE: M/DD/YEAR
+    -- Code Reviewer:
+    -- Note:
+    -- =============================================
+
+as
+
+/* -----TEST CODE-----
+
+
+Execute [dbo].[EventStatus_SelectAll]
+					
+
+-----END TEST CODE-----
+*/
+Begin
+	
+		SELECT [Id]
+			  ,[Name]
+		  FROM [dbo].[EventStatus]
+
+
+
+
+End
