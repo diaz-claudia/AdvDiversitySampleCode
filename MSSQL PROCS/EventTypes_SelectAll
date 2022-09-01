@@ -1,0 +1,40 @@
+USE [AdvDiversity]
+GO
+/****** Object:  StoredProcedure [dbo].[EventTypes_SelectAll]    Script Date: 9/1/2022 1:37:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER proc [dbo].[EventTypes_SelectAll]
+
+   -- =============================================
+    -- Author: Claudia Diaz
+    -- Create date: 5/22/2022
+    -- Description: SelectAll for dbo.EventType Lookup Table
+    -- Code Reviewer: Author
+    -- MODIFIED BY: Author
+    -- MODIFIED DATE: M/DD/YEAR
+    -- Code Reviewer:
+    -- Note:
+    -- =============================================
+
+as
+
+/* -----TEST CODE-----
+
+
+Execute [dbo].[EventTypes_SelectAll]
+					
+
+-----END TEST CODE-----
+*/
+Begin
+	
+		SELECT [Id]
+			  ,[Name]
+		  FROM [dbo].[EventTypes]
+
+
+
+
+End
