@@ -1,0 +1,156 @@
+USE [AdvDiversity]
+GO
+/****** Object:  StoredProcedure [dbo].[Events_Update_V2]    Script Date: 9/1/2022 1:36:41 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+    -- Author: Claudia Diaz
+    -- Create date: 5/22/2022
+    -- Description: [Events_Update_V2] for dbo.Events inserts into Events,Venues,Locations
+    -- Code Reviewer: Aeron Inouye
+    -- MODIFIED BY: author
+    -- MODIFIED DATE: M/DD/YEAR
+    -- Code Reviewer:
+    -- Note:
+    -- =============================================
+
+
+
+
+
+ALTER proc [dbo].[Events_Update_V2]
+					@LocationTypeId int
+					,@LineOne nvarchar(255)
+					,@LineTwo nvarchar(255)
+					,@City nvarchar(255)
+					,@Zip nvarchar(50)
+					,@StateId int
+					,@Latitude float
+					,@Longitude float
+					,@CreatedBy int	
+					,@VenueName nvarchar(255)
+					,@VenueDescription nvarchar(4000)
+					,@VenueUrl nvarchar(255)
+					,@EventTypeId int
+					,@Name nvarchar(255)
+					,@Summary nvarchar(255)
+					,@ShortDescription nvarchar(4000)
+					,@EventStatusId int
+					,@ImageUrl nvarchar(400)
+					,@ExternalSiteUrl nvarchar(400)
+					,@isFree bit
+					,@DateStart datetime2(7)
+					,@DateEnd datetime2(7)
+					,@Id int
+as
+/*
+		Declare @LocationTypeId int = 3
+				,@LineOne nvarchar(255) = '1 Facebook Way'
+				,@LineTwo nvarchar(255) ='Suite 500'
+				,@City nvarchar(255) ='Cuepertino'
+				,@Zip nvarchar(50) ='90000'
+				,@StateId int = 8
+				,@Latitude float =100
+				,@Longitude float =100
+				,@CreatedBy int	=2
+				,@VenueName nvarchar(255) ='Auditorium'
+				,@VenueDescription nvarchar(4000) ='Its an auditorium'
+				,@VenueUrl nvarchar(255) ='facebook.com'
+				,@EventTypeId int =1
+				,@Name nvarchar(255) = 'RECRUTING Fair'
+				,@Summary nvarchar(255)='Recruting Fair for diverse hires.'
+				,@ShortDescription nvarchar(4000) ='Recruting Fair is an event where you can find a job.'
+				,@EventStatusId int = 1
+				,@ImageUrl nvarchar(400) = 'https://tinyurl.com/2ykack73'
+				,@ExternalSiteUrl nvarchar(400) ='facebook.com'
+				,@isFree bit = 'false'
+				,@DateStart datetime2(7) ='2022-06-15'
+				,@DateEnd datetime2(7) ='2022-06-18'
+				,@Id int =18
+
+
+		Execute dbo.Events_Update_V2 
+						@LocationTypeId 
+					   ,@LineOne 
+					   ,@LineTwo
+					   ,@City
+					   ,@Zip 
+					   ,@StateId 
+					   ,@Latitude 
+					   ,@Longitude
+					   ,@CreatedBy 	
+					   ,@VenueName 
+					   ,@VenueDescription 
+					   ,@VenueUrl 
+					   ,@EventTypeId
+					   ,@Name 
+					   ,@Summary
+					   ,@ShortDescription
+					   ,@EventStatusId
+					   ,@ImageUrl
+					   ,@ExternalSiteUrl
+					   ,@isFree
+					   ,@DateStart
+					   ,@DateEnd
+					   ,@Id 
+
+Execute dbo.Events_SelectDetails_ById @Id
+
+
+
+
+*/
+Begin
+
+		Declare @DateModified datetime2 = getutcdate()
+
+		UPDATE [dbo].[Locations]
+		   SET [LocationTypeId] = @LocationTypeId
+			  ,[LineOne] = @LineOne
+			  ,[LineTwo] = @LineTwo
+			  ,[City] = @City
+			  ,[Zip] = @Zip
+			  ,[StateId] = @StateId
+			  ,[Latitude] = @Latitude
+			  ,[Longitude] = @Longitude
+			  ,[DateModified] = @DateModified
+			  ,[ModifiedBy] = @CreatedBy
+		 WHERE Id= (select LocationId
+					from dbo.Venues as v inner join dbo.Events as e
+					on v.Id = e.VenueId
+					where e.Id =@Id)
+
+	
+
+		UPDATE [dbo].[Venues]
+		   SET [Name] = @VenueName
+			  ,[Description] = @VenueDescription
+			  ,[Url] = @VenueUrl
+			  ,[ModifiedBy] = @CreatedBy
+			  ,[DateModified] = @DateModified
+		 WHERE Id =(select VenueId 
+					from dbo.Events as e
+					where e.Id = @Id)
+
+
+		
+		
+		UPDATE [dbo].[Events]
+		   SET [EventTypeId] = @EventTypeID
+			  ,[Name] = @Name
+			  ,[Summary] = @Summary
+			  ,[ShortDescription] = @ShortDescription
+			  ,[EventStatusId] = @EventStatusId
+			  ,[ImageUrl] = @ImageUrl
+			  ,[ExternalSiteUrl] = @ExternalSiteUrl
+			  ,[isFree] = @isFree
+			  ,[DateModified] = @DateModified
+			  ,[DateStart] = @DateStart
+			  ,[DateEnd] = @DateEnd
+		 WHERE @Id = Id
+
+
+
+End
